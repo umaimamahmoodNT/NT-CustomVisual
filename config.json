@@ -1,0 +1,72 @@
+{
+  "data": [
+    {
+      "id": "dimensions",
+      "label": "Dimensions",
+      "elements": [
+        {
+          "id": "sfid",
+          "type": "DIMENSION",
+          "label": "SFID",
+          "options": { "min": 1, "max": 1 }
+        },
+        {
+          "id": "placementName",
+          "type": "DIMENSION",
+          "label": "Placement Name",
+          "options": { "min": 0, "max": 1 }
+        },
+        {
+          "id": "startDate",
+          "type": "DIMENSION",
+          "label": "Start Date",
+          "options": { "min": 0, "max": 1 }
+        },
+        {
+          "id": "endDate",
+          "type": "DIMENSION",
+          "label": "End Date",
+          "options": { "min": 0, "max": 1 }
+        },
+        {
+          "id": "additionalTargeting",
+          "type": "DIMENSION",
+          "label": "Additional Targeting (shown on hover, not as a column)",
+          "options": { "min": 0, "max": 1 }
+        }
+      ]
+    },
+    {
+      "id": "metrics",
+      "label": "Metrics",
+      "elements": [
+        {
+          "id": "metrics",
+          "type": "METRIC",
+          "label": "Metrics (volume, impressions, clicks, CTR, etc.)",
+          "options": { "min": 0, "max": 10 }
+        }
+      ]
+    }
+  ],
+  "style": [
+    {
+      "id": "tableStyle",
+      "label": "Table Style",
+      "elements": [
+        {
+          "id": "headerBackgroundColor",
+          "type": "FILL_COLOR",
+          "label": "Header Background Color",
+          "defaultValue": "#f1f3f4"
+        },
+        {
+          "id": "fontSize",
+          "type": "FONT_SIZE",
+          "label": "Font Size",
+          "defaultValue": 12
+        }
+      ]
+    }
+  ]
+}

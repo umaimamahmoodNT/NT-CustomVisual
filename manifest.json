@@ -1,0 +1,20 @@
+{
+  "name": "SFID Targeting Table",
+  "logoUrl": "https://www.gstatic.com/images/branding/product/1x/data_studio_64dp.png",
+  "description": "Basic table with a hover tooltip on SFID showing Additional Targeting info.",
+  "supportUrl": "",
+  "components": [
+    {
+      "id": "sfidTargetingTable",
+      "name": "SFID Targeting Table",
+      "iconUrl": "https://www.gstatic.com/images/branding/product/1x/data_studio_64dp.png",
+      "description": "Table with hover-tooltip Additional Targeting on the SFID column.",
+      "resource": {
+        "js": "viz.js",
+        "css": "viz.css",
+        "config": "config.json"
+      }
+    }
+  ],
+  "organization": "internal-test"
+}

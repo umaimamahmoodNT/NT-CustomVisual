@@ -1,0 +1,44 @@
+#container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  font-family: Arial, sans-serif;
+}
+
+.sfid-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sfid-table th,
+.sfid-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sfid-table th {
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.sfid-hover-target {
+  cursor: default;
+  border-bottom: 1px dashed #888; /* visual hint that this cell has more info */
+}
+
+.sfid-targeting-tooltip {
+  position: fixed;
+  max-width: 240px;
+  background: #1f1f1f;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 8px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 9999;
+}
