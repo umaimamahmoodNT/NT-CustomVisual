@@ -1,11 +1,13 @@
 /**
- * SFID TARGETING TABLE
- * A minimal Community Visualization: renders a basic table (sfid, placement
- * name, dates, metrics) and shows Additional Targeting as a hover tooltip
- * on the sfid cell. This is a standalone test viz — it does not touch or
- * replace the existing production plugin.
+ * TOOLTIP TABLE
+ * A general-purpose Community Visualization for Looker Studio: renders a
+ * plain HTML table from any dimensions/metrics the user maps, and shows a
+ * hover tooltip on the first column using a separate "tooltip content"
+ * field that is never rendered as its own column.
  *
- * Built for Google's dscc (Data Studio Community Components) library.
+ * Looker Studio's native table has no tooltip support, so this works around
+ * that limitation by drawing the table ourselves (via Google's dscc
+ * library) and attaching real DOM hover handlers.
  */
 
 let tooltipEl = null;
@@ -17,10 +19,12 @@ function drawViz(data) {
   const style = data.style || {};
   const headerBg = getStyleValue(style, 'headerBackgroundColor', '#f1f3f4');
   const fontSize = getStyleValue(style, 'fontSize', 12);
+  const tooltipBg = getStyleValue(style, 'tooltipBackgroundColor', '#1f1f1f');
+  const tooltipColor = getStyleValue(style, 'tooltipTextColor', '#ffffff');
   container.style.fontSize = `${fontSize}px`;
 
   const table = document.createElement('table');
-  table.className = 'sfid-table';
+  table.className = 'tooltip-table';
 
   // ---------- HEADER ROW ----------
   const thead = document.createElement('thead');
@@ -38,21 +42,23 @@ function drawViz(data) {
 
   // ---------- BODY ROWS ----------
   const tbody = document.createElement('tbody');
+  const tooltipFieldId = getTooltipFieldId(data);
 
   data.tables.DEFAULT.forEach((row) => {
     const tr = document.createElement('tr');
 
-    columns.forEach((col) => {
+    columns.forEach((col, colIndex) => {
       const td = document.createElement('td');
       const value = row[col.id];
-      td.textContent = formatValue(value, col.id);
+      td.textContent = formatValue(value);
 
-      // Attach hover behavior only to the sfid cell
-      if (col.id === 'sfid') {
-        const targetingText = row.additionalTargeting;
-        if (targetingText) {
-          td.classList.add('sfid-hover-target');
-          td.addEventListener('mouseenter', (e) => showTooltip(e, targetingText));
+      // The first table column carries the tooltip, so users always know
+      // where to hover regardless of which fields they've mapped.
+      if (colIndex === 0 && tooltipFieldId) {
+        const tooltipText = row[tooltipFieldId];
+        if (tooltipText) {
+          td.classList.add('tooltip-hover-target');
+          td.addEventListener('mouseenter', (e) => showTooltip(e, tooltipText, tooltipBg, tooltipColor));
           td.addEventListener('mousemove', (e) => positionTooltip(e));
           td.addEventListener('mouseleave', hideTooltip);
         }
@@ -70,27 +76,29 @@ function drawViz(data) {
 
 // ---------- COLUMN DEFINITIONS ----------
 // Builds the column list from whatever fields the user has mapped in the
-// Setup panel — so this adapts automatically if you add/remove a dimension
-// or metric in Looker Studio, rather than hardcoding column names.
+// Setup panel (Table Columns + Metrics), in the order they were added, so
+// this adapts to any table shape instead of hardcoding column names.
 function getColumns(data) {
   const cols = [];
   const fields = data.fields;
 
-  if (fields.sfid) cols.push({ id: 'sfid', label: fields.sfid[0].name });
-  if (fields.placementName) cols.push({ id: 'placementName', label: fields.placementName[0].name });
-  if (fields.startDate) cols.push({ id: 'startDate', label: fields.startDate[0].name });
-  if (fields.endDate) cols.push({ id: 'endDate', label: fields.endDate[0].name });
+  if (fields.tableColumns) {
+    fields.tableColumns.forEach((f) => cols.push({ id: f.id, label: f.name }));
+  }
 
   if (fields.metrics) {
-    fields.metrics.forEach((m) => {
-      cols.push({ id: m.id, label: m.name });
-    });
+    fields.metrics.forEach((m) => cols.push({ id: m.id, label: m.name }));
   }
 
   return cols;
 }
 
-function formatValue(value, colId) {
+function getTooltipFieldId(data) {
+  const field = data.fields.tooltipField && data.fields.tooltipField[0];
+  return field ? field.id : null;
+}
+
+function formatValue(value) {
   if (value === undefined || value === null) return '';
   return String(value);
 }
@@ -100,11 +108,13 @@ function getStyleValue(style, key, fallback) {
 }
 
 // ---------- TOOLTIP ----------
-function showTooltip(mouseEvent, text) {
+function showTooltip(mouseEvent, text, bgColor, textColor) {
   hideTooltip();
   tooltipEl = document.createElement('div');
-  tooltipEl.className = 'sfid-targeting-tooltip';
+  tooltipEl.className = 'tooltip-popup';
   tooltipEl.textContent = text;
+  tooltipEl.style.backgroundColor = bgColor;
+  tooltipEl.style.color = textColor;
   document.body.appendChild(tooltipEl);
   positionTooltip(mouseEvent);
 }
@@ -133,7 +143,6 @@ function hideTooltip() {
 }
 
 // ---------- SUBSCRIBE TO DATA ----------
-// objectTransform gives each row as an object keyed by the config field ids
-// (sfid, placementName, additionalTargeting, etc.) — matches what this file
-// reads above.
+// objectTransform gives each row as an object keyed by field id — matches
+// what this file reads above via col.id / tooltipFieldId.
 dscc.subscribeToData(drawViz, { transform: dscc.objectTransform });

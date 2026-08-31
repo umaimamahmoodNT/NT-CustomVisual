@@ -5,40 +5,39 @@
   font-family: Arial, sans-serif;
 }
 
-.sfid-table {
+.tooltip-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.sfid-table th,
-.sfid-table td {
+.tooltip-table th,
+.tooltip-table td {
   padding: 6px 10px;
   border-bottom: 1px solid #e0e0e0;
   text-align: left;
   white-space: nowrap;
 }
 
-.sfid-table th {
+.tooltip-table th {
   font-weight: 600;
   position: sticky;
   top: 0;
 }
 
-.sfid-hover-target {
+.tooltip-hover-target {
   cursor: default;
   border-bottom: 1px dashed #888; /* visual hint that this cell has more info */
 }
 
-.sfid-targeting-tooltip {
+.tooltip-popup {
   position: fixed;
-  max-width: 240px;
-  background: #1f1f1f;
-  color: #fff;
+  max-width: 280px;
   font-size: 12px;
   line-height: 1.4;
   padding: 8px 10px;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  white-space: pre-wrap;
   pointer-events: none;
   z-index: 9999;
 }

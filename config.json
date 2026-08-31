@@ -5,33 +5,15 @@
       "label": "Dimensions",
       "elements": [
         {
-          "id": "sfid",
+          "id": "tableColumns",
           "type": "DIMENSION",
-          "label": "SFID",
-          "options": { "min": 1, "max": 1 }
+          "label": "Table Columns (shown in order, first column carries the tooltip)",
+          "options": { "min": 1, "max": 10 }
         },
         {
-          "id": "placementName",
+          "id": "tooltipField",
           "type": "DIMENSION",
-          "label": "Placement Name",
-          "options": { "min": 0, "max": 1 }
-        },
-        {
-          "id": "startDate",
-          "type": "DIMENSION",
-          "label": "Start Date",
-          "options": { "min": 0, "max": 1 }
-        },
-        {
-          "id": "endDate",
-          "type": "DIMENSION",
-          "label": "End Date",
-          "options": { "min": 0, "max": 1 }
-        },
-        {
-          "id": "additionalTargeting",
-          "type": "DIMENSION",
-          "label": "Additional Targeting (shown on hover, not as a column)",
+          "label": "Tooltip Content (shown on hover over the first column, not shown as a column)",
           "options": { "min": 0, "max": 1 }
         }
       ]
@@ -43,7 +25,7 @@
         {
           "id": "metrics",
           "type": "METRIC",
-          "label": "Metrics (volume, impressions, clicks, CTR, etc.)",
+          "label": "Metrics",
           "options": { "min": 0, "max": 10 }
         }
       ]
@@ -65,6 +47,24 @@
           "type": "FONT_SIZE",
           "label": "Font Size",
           "defaultValue": 12
+        }
+      ]
+    },
+    {
+      "id": "tooltipStyle",
+      "label": "Tooltip Style",
+      "elements": [
+        {
+          "id": "tooltipBackgroundColor",
+          "type": "FILL_COLOR",
+          "label": "Tooltip Background Color",
+          "defaultValue": "#1f1f1f"
+        },
+        {
+          "id": "tooltipTextColor",
+          "type": "FONT_COLOR",
+          "label": "Tooltip Text Color",
+          "defaultValue": "#ffffff"
         }
       ]
     }
